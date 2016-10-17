@@ -54,6 +54,8 @@
     <module>leptonica</module>
     <module>tesseract</module>
     <module>caffe</module>
+    <module>caffeC3DOverlapLoss</module>
+    <module>caffeC3DSampleRate</module>
     <module>cuda</module>
     <module>mxnet</module>
     <module>tensorflow</module>
