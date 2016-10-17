@@ -72,7 +72,6 @@ import org.bytedeco.javacpp.tools.InfoMapper;
         "caffe/util/math_functions.hpp",
         "caffe/util/mkl_alternate.hpp",
         "caffe/util/rng.hpp",
-        "caffe/util/upgrade_proto.hpp",
         "caffe/util/vol2col.hpp",
         "caffe/video_data_layer.hpp",
         "caffe/vision_layers.hpp",
@@ -88,15 +87,14 @@ public class caffeC3DSampleRate implements InfoMapper {
     public void map(InfoMap infoMap) {
         infoMap.put(new Info("LIBPROTOBUF_EXPORT", "LIBPROTOC_EXPORT", "GOOGLE_PROTOBUF_VERIFY_VERSION", "GOOGLE_ATTRIBUTE_ALWAYS_INLINE", "GOOGLE_ATTRIBUTE_DEPRECATED",
                              "GOOGLE_DLOG", "NOT_IMPLEMENTED", "NO_GPU", "CUDA_POST_KERNEL_CHECK").cppTypes().annotations())
-               .put(new Info("NDEBUG", "GFLAGS_GFLAGS_H_", "SWIG").define())
-               .put(new Info("USE_CUDNN", "defined(_WIN32) && defined(GetMessage)").define(false))
+               .put(new Info("NDEBUG", "USE_CUDNN", "GFLAGS_GFLAGS_H_", "SWIG").define())
+               .put(new Info("defined(_WIN32) && defined(GetMessage)").define(false))
                .put(new Info("cublasHandle_t", "curandGenerator_t").cast().valueTypes("Pointer"))
                .put(new Info("CBLAS_TRANSPOSE", "cublasStatus_t", "curandStatus_t", "hid_t").cast().valueTypes("int"))
                .put(new Info("std::string").annotations("@StdString").valueTypes("BytePointer", "String").pointerTypes("@Cast({\"char*\", \"std::string*\"}) BytePointer"))
                .put(new Info("std::vector<std::string>").pointerTypes("StringVector").define())
                .put(new Info("std::vector<const google::protobuf::FieldDescriptor*>").pointerTypes("FieldDescriptorVector").define())
                .put(new Info("std::vector<caffe::Datum>").pointerTypes("DatumVector").define())
-               .put(new Info("caffe::BlockingQueue<caffe::Datum*>").pointerTypes("DatumBlockingQueue"))
 
                .put(new Info("google::protobuf::int8", "google::protobuf::uint8").cast().valueTypes("byte").pointerTypes("BytePointer", "ByteBuffer", "byte[]"))
                .put(new Info("google::protobuf::int16", "google::protobuf::uint16").cast().valueTypes("short").pointerTypes("ShortPointer", "ShortBuffer", "short[]"))
@@ -121,9 +119,9 @@ public class caffeC3DSampleRate implements InfoMapper {
                    .put(new Info("caffe::" + t + "<double>").javaNames(t + "_double"));
         }
 
-        String classTemplates[] = { "Blob", "DataTransformer", "Filler", "ConstantFiller", "UniformFiller", "GaussianFiller", "PositiveUnitballFiller", "XavierFiller", "MSRAFiller", "BilinearFiller",
+        String classTemplates[] = { "Blob", "Filler", "ConstantFiller", "UniformFiller", "GaussianFiller", "PositiveUnitballFiller", "XavierFiller", "MSRAFiller", "BilinearFiller",
                 "BaseDataLayer", "Batch", "BasePrefetchingDataLayer", "DataLayer", "DummyDataLayer", "HDF5DataLayer", "HDF5OutputLayer", "ImageDataLayer", "MemoryDataLayer",
-                "WindowDataLayer", "Layer", "LayerRegistry", "LayerRegisterer", "AccuracyLayer", "LossLayer", "ContrastiveLossLayer", "EuclideanLossLayer", "HingeLossLayer",
+                "WindowDataLayer", "Layer", "AccuracyLayer", "LossLayer", "ContrastiveLossLayer", "EuclideanLossLayer", "HingeLossLayer",
                 "InfogainLossLayer", "MultinomialLogisticLossLayer", "SigmoidCrossEntropyLossLayer", "SoftmaxWithLossLayer", "NeuronLayer", "AbsValLayer", "BNLLLayer",
                 "DropoutLayer", "ExpLayer", "PowerLayer", "ReLULayer", "SigmoidLayer", "TanHLayer", "ThresholdLayer", "PReLULayer", "PythonLayer", "ArgMaxLayer", "BatchNormLayer",
                 "BatchReindexLayer", "ConcatLayer", "EltwiseLayer", "EmbedLayer", "FilterLayer", "FlattenLayer", "InnerProductLayer", "MVNLayer", "ReshapeLayer", "ReductionLayer",
@@ -174,11 +172,6 @@ public class caffeC3DSampleRate implements InfoMapper {
                .put(new Info("std::vector<std::vector<caffe::Blob<float>*> >").pointerTypes("FloatBlobVectorVector").define())
                .put(new Info("std::vector<std::vector<caffe::Blob<double>*> >").pointerTypes("DoubleBlobVectorVector").define())
 
-               .put(new Info("caffe::LayerRegistry<float>::Creator").valueTypes("FloatLayerRegistry.Creator"))
-               .put(new Info("caffe::LayerRegistry<double>::Creator").valueTypes("DoubleLayerRegistry.Creator"))
-               .put(new Info("std::map<std::string,caffe::LayerRegistry<float>::Creator>").pointerTypes("FloatRegistry").define())
-               .put(new Info("std::map<std::string,caffe::LayerRegistry<double>::Creator>").pointerTypes("DoubleRegistry").define())
-
                .put(new Info("std::vector<bool>").pointerTypes("BoolVector").define())
                .put(new Info("std::vector<std::vector<bool> >").pointerTypes("BoolVectorVector").define())
                .put(new Info("std::map<std::string,int>").pointerTypes("StringIntMap").define())
@@ -192,21 +185,6 @@ public class caffeC3DSampleRate implements InfoMapper {
                        "public DoubleLayer layer_by_name(BytePointer layer_name) { return layer_by_name(DoubleLayer.class, layer_name); }\n"
                      + "public DoubleLayer layer_by_name(String layer_name) { return layer_by_name(DoubleLayer.class, layer_name); };\n"
                      + "public native @Const @Cast({\"\", \"boost::shared_ptr<caffe::Layer<double> >\"}) @SharedPtr @ByVal <L extends DoubleLayer> L layer_by_name(Class<L> cls, @StdString BytePointer layer_name);\n"
-                     + "public native @Const @Cast({\"\", \"boost::shared_ptr<caffe::Layer<double> >\"}) @SharedPtr @ByVal <L extends DoubleLayer> L layer_by_name(Class<L> cls, @StdString String layer_name);\n"))
-
-               .put(new Info("caffe::Solver<float>::Callback").pointerTypes("FloatSolver.Callback"))
-               .put(new Info("std::vector<caffe::Solver<float>::Callback*>").pointerTypes("FloatCallbackVector").define())
-               .put(new Info("caffe::Solver<double>::Callback").pointerTypes("DoubleSolver.Callback"))
-               .put(new Info("std::vector<caffe::Solver<double>::Callback*>").pointerTypes("DoubleCallbackVector").define())
-               .put(new Info("boost::function<caffe::SolverAction::Enum()>").pointerTypes("ActionCallback"));
-    }
-
-    public static class ActionCallback extends FunctionPointer {
-        static { Loader.load(); }
-        /** Pointer cast constructor. Invokes {@link Pointer#Pointer(Pointer)}. */
-        public    ActionCallback(Pointer p) { super(p); }
-        protected ActionCallback() { allocate(); }
-        private native void allocate();
-        public native @Cast("caffe::SolverAction::Enum") int call();
+                     + "public native @Const @Cast({\"\", \"boost::shared_ptr<caffe::Layer<double> >\"}) @SharedPtr @ByVal <L extends DoubleLayer> L layer_by_name(Class<L> cls, @StdString String layer_name);\n"));
     }
 }
