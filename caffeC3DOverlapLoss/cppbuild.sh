@@ -160,6 +160,6 @@ make -j $MAKEJ BLAS=$BLAS OPENCV_VERSION=3 DISTRIBUTE_DIR=../.. VERBOSE=1
 mkdir -p ../../include/caffe/proto
 cp -a include/caffe/* ../../include/caffe/
 cp -a build/src/caffe/proto/caffe.pb.h ../../include/caffe/proto
-cp -a build/lib/libcaffe.so ../../lib/libcaffeC3DOverlapLoss
+cp -a build/lib/libcaffe.so ../../lib/libcaffeC3DOverlapLoss.so
 
 cd ../../..
