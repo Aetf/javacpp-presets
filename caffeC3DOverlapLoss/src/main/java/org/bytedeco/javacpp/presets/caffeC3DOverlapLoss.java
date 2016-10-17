@@ -77,7 +77,7 @@ import org.bytedeco.javacpp.tools.InfoMapper;
         "caffe/vision_layers.hpp",
         "caffe/volume_data_layer.hpp"
     },
-        link = "caffe",
+        link = "caffeC3DOverlapLoss",
         includepath = {"/usr/local/cuda/include/", "/System/Library/Frameworks/vecLib.framework/",
         "/System/Library/Frameworks/Accelerate.framework/"},
         linkpath = "/usr/local/cuda/lib/"),
