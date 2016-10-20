@@ -17,15 +17,6 @@ case $PLATFORM in
         export BINARY=32
         export BLAS=open
         ;;
-    linux-x86_64-nogpu)
-        export CPU_ONLY=1
-        export CC="$OLDCC -m64"
-        export CXX="$OLDCXX -m64"
-        export FC="$OLDFC -m64"
-        export TOOLSET=`echo $OLDCC | sed 's/\([a-zA-Z]*\)\([0-9]\)\([0-9]\)/\1-\2.\3/'`
-        export BINARY=64
-        export BLAS=open
-        ;;
     linux-x86_64)
         export CPU_ONLY=0
         export CC="$OLDCC -m64"
